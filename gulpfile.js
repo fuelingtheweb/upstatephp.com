@@ -69,6 +69,7 @@ gulp.task('main', function() {
 // Admin Plugin Styles
 gulp.task('admin-plugin-styles', function() {
     return gulp.src([
+            'bower_components/bootstrap-material-design/css-compiled/*.css',
             'assets/css/vendor/jquery.datetimepicker.css'
         ])
         .pipe(gulp.dest('assets/css/build'))
@@ -76,6 +77,17 @@ gulp.task('admin-plugin-styles', function() {
         .pipe(plugins.minifyCss({ keepSpecialComments: 1 }))
         .pipe(gulp.dest('public/css'))
         .pipe(plugins.notify({ message: 'Admin Plugin Styles task complete' }));
+});
+
+// Admin Styles
+gulp.task('admin-styles', function() {
+    return gulp.src('assets/less/admin.less')
+        .pipe(plugins.less())
+        .pipe(gulp.dest('assets/css'))
+        .pipe(plugins.rename('admin.min.css'))
+        .pipe(plugins.minifyCss({ keepSpecialComments: 1 }))
+        .pipe(gulp.dest('public/css'))
+        .pipe(plugins.notify({ message: 'Admin Styles task complete' }));
 });
 
 // Admin Plugin Scripts
@@ -103,4 +115,4 @@ gulp.task('admin', function() {
 });
 
 gulp.task('default', ['plugin-styles', 'template-styles', 'plugins', 'main']);
-gulp.task('backend', ['admin-plugin-styles', 'admin-plugins', 'admin']);
+gulp.task('backend', ['admin-plugin-styles', 'admin-styles', 'admin-plugins', 'admin']);

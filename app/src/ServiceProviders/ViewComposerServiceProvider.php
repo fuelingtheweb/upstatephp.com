@@ -12,6 +12,7 @@ class ViewComposerServiceProvider extends ServiceProvider
         $this->add('venues.admin.form', 'StatesDropdownComposer');
         $this->add('organizations.admin.form', 'OrganizationTypesComposer');
         $this->add('buckets.recent-tweets', 'RecentTweetsComposer');
+        $this->add('partials.admin.sidebar', 'SidebarMenuComposer');
     }
 
     protected function add($view, $class)

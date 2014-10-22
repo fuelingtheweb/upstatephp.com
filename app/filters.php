@@ -98,17 +98,16 @@ Route::filter('auth', function()
 
 Route::filter('admin', function()
 {
-    Orchestra\Asset::style('admin-plugins', 'css/admin-plugins.min.css', ['plugins']);
+    Orchestra\Asset::container('admin-styles')->style('plugins', 'css/plugins.min.css');
+    Orchestra\Asset::container('admin-styles')->style('admin-plugins', 'css/admin-plugins.min.css', 'plugins');
+    Orchestra\Asset::container('admin-styles')->style('admin-styles', 'css/admin.min.css', ['plugins', 'admin-plugins']);
     Orchestra\Asset::container('footer')->script('admin-plugins', 'js/admin-plugins.min.js', 'jquery');
     Orchestra\Asset::container('footer')->script('admin', 'js/admin.min.js', ['jquery', 'admin-plugins']);
 
-    App::make('menu')->put('admin', [
-        'items' => [
-            'events' => URL::route('admin.events.index'),
-            'organizations' => URL::route('admin.organizations.index'),
-            'venues' => URL::route('admin.venues.index')
-        ]
-    ]);
+    $menu = App::make('menu');
+    $menu->put('events', URL::route('admin.events.index'));
+    $menu->put('organizations', URL::route('admin.organizations.index'));
+    $menu->put('venues', URL::route('admin.venues.index'));
 });
 
 Route::filter('cache', function($route, $request, $response = null)

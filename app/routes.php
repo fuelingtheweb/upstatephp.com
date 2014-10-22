@@ -12,6 +12,8 @@ Route::get('logout', ['as' => 'logout', 'uses' => 'AuthController@logout']);
 
 Route::group(['prefix' => 'admin', 'before' => 'auth'], function()
 {
+    Route::get('/', ['as' => 'admin.root', 'uses' => 'DashboardController@index']);
+
     Route::get('events', ['as' => 'admin.events.index', 'uses' => 'EventsController@adminIndex']);
     Route::get('events/create', ['as' => 'admin.events.create', 'uses' => 'EventsController@create']);
     Route::post('events', ['as' => 'admin.events.store', 'uses' => 'EventsController@store']);

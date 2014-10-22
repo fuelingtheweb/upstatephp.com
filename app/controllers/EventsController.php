@@ -2,7 +2,7 @@
 
 use UpstatePHP\Website\Models;
 
-class EventsController extends PageController
+class EventsController extends AdminController
 {
     public function adminIndex()
     {
