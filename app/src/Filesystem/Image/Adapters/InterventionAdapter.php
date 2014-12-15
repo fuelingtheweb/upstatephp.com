@@ -1,11 +1,11 @@
-<?php namespace UpstatePHP\Website\Filesystem\Image\Providers;
+<?php namespace UpstatePHP\Website\Filesystem\Image\Adapters;
 
 use Intervention\Image\ImageManager;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use UpstatePHP\Website\Filesystem\Image\ImageRepository;
+use UpstatePHP\Website\Filesystem\Image\ImageInterface;
 
-class InterventionProvider extends AbstractBaseImageProvider implements ImageRepository
+class InterventionAdapter extends AbstractBaseImageAdapter implements ImageInterface
 {
     protected $image;
 
@@ -20,7 +20,7 @@ class InterventionProvider extends AbstractBaseImageProvider implements ImageRep
 
     /**
      * @param File $file
-     * @return $this|ImageRepository
+     * @return $this|ImageInterface
      */
     public function setFile(File $file)
     {
@@ -45,7 +45,7 @@ class InterventionProvider extends AbstractBaseImageProvider implements ImageRep
      * @param int $width
      * @param null $height
      * @param bool $constrainAspect
-     * @return $this|ImageRepository
+     * @return $this|ImageInterface
      */
     public function resize($width, $height = null, $constrainAspect = true)
     {
@@ -55,6 +55,41 @@ class InterventionProvider extends AbstractBaseImageProvider implements ImageRep
 
         return $this;
     }
+
+    public function resizeCanvas($width, $height, $anchor = 'center', $relative = false, $bgColor = '#ffffff')
+    {
+        $this->image->resizeCanvas($width, $height, $anchor, $relative, $bgColor);
+
+        return $this;
+    }
+
+    /**
+     * @param int $x
+     * @param int $y
+     * @param string $format array\rgb\rgba\hex\int
+     * @return mixed
+     */
+    public function pickColor($x, $y, $format = 'rgb')
+    {
+        return $this->image->pickColor($x, $y, $format);
+    }
+
+    /**
+     * @return int
+     */
+    public function width()
+    {
+        return $this->image->width();
+    }
+
+    /**
+     * @return int
+     */
+    public function height()
+    {
+        return $this->image->height();
+    }
+
 
     public function save()
     {
