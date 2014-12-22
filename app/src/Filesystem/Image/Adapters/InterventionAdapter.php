@@ -31,10 +31,17 @@ class InterventionAdapter extends AbstractBaseImageAdapter implements ImageInter
             && $file->getClientMimeType() === 'application/postscript'
         ) {
             $imagick->setResolution(300, 300);
-            $imagick->setColorspace(\Imagick::COLORSPACE_RGB);
         }
 
         $imagick->readImage($file->getRealPath());
+
+        if ($imagick->getImageColorspace() === \Imagick::COLORSPACE_CMYK) {
+            $imagick->profileImage('icc', file_get_contents(storage_path() . '/support/color-profiles/USWebUncoated.icc'));
+        }
+
+        $imagick->profileImage('icc', file_get_contents(storage_path() . '/support/color-profiles/AdobeRGB1998.icc'));
+        $imagick->setImageFormat('png');
+        $imagick->stripImage();
 
         $this->image = $this->imageManager->make($imagick);
 
